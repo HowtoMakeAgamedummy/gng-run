@@ -406,6 +406,6 @@ function changeAdminRole(add){
  localStorage.setItem('gng-local-admins',JSON.stringify(admins));$('adminTarget').value='';refreshOwnerCommands();
 }
 $('giveAdminBtn').onclick=()=>changeAdminRole(true);$('removeAdminBtn').onclick=()=>changeAdminRole(false);refreshOwnerCommands();
-function loop(){update();draw();requestAnimationFrame(loop)}try{const savedGun=JSON.parse(localStorage.getItem('gng-custom-gun')||'{}');if(savedGun.color)gunColor=savedGun.color;rapidFire=!!savedGun.rapid}catch(e){}buildUI();hud();loop();
+function loop(){try{update();draw()}catch(e){const n=$('runtimeNotice');if(n){n.style.display='block';n.textContent='GAME ERROR: '+(e&&e.message?e.message:String(e));}try{ctx.fillStyle='#10172b';ctx.fillRect(0,0,c.width,c.height);ctx.fillStyle='#ffffff';ctx.font='bold 24px system-ui';ctx.fillText('GNG RUN ERROR',28,60);ctx.font='16px system-ui';ctx.fillText(String(e&&e.message?e.message:e).slice(0,95),28,95)}catch(ignore){}}requestAnimationFrame(loop)}try{const savedGun=JSON.parse(localStorage.getItem('gng-custom-gun')||'{}');if(savedGun.color)gunColor=savedGun.color;rapidFire=!!savedGun.rapid}catch(e){}buildUI();hud();loop();
 if('serviceWorker' in navigator && location.protocol.startsWith('http')){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));}
 </script></body></html>
