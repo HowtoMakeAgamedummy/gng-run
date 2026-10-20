@@ -406,6 +406,6 @@ function changeAdminRole(add){
  localStorage.setItem('gng-local-admins',JSON.stringify(admins));$('adminTarget').value='';refreshOwnerCommands();
 }
 $('giveAdminBtn').onclick=()=>changeAdminRole(true);$('removeAdminBtn').onclick=()=>changeAdminRole(false);refreshOwnerCommands();
-function loop(){update();draw();requestAnimationFrame(loop)}try{const savedGun=JSON.parse(localStorage.getItem('gng-custom-gun')||'{}');if(savedGun.color)gunColor=savedGun.color;rapidFire=!!savedGun.rapid}catch(e){}buildUI();hud();loop();
+function loop(){try{update();draw();}catch(err){const n=$('runtimeNotice');if(n){n.style.display='block';n.textContent='Gng Run drawing error: '+(err&&err.message?err.message:String(err));}try{ctx.save();ctx.setTransform(1,0,0,1,0,0);ctx.fillStyle='#11172b';ctx.fillRect(0,0,c.width,c.height);ctx.textAlign='center';ctx.fillStyle='#ff6478';ctx.font='bold 24px system-ui';ctx.fillText('GNG RUN DRAW ERROR',c.width/2, c.height/2-18);ctx.fillStyle='#ffffff';ctx.font='16px system-ui';ctx.fillText(String(err&&err.message?err.message:err).slice(0,90),c.width/2,c.height/2+18);ctx.restore();}catch(e){}}requestAnimationFrame(loop)}try{const savedGun=JSON.parse(localStorage.getItem('gng-custom-gun')||'{}');if(savedGun.color)gunColor=savedGun.color;rapidFire=!!savedGun.rapid}catch(e){}buildUI();hud();loop();
 if('serviceWorker' in navigator && location.protocol.startsWith('http')){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));}
 </script></body></html>
