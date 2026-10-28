@@ -90,6 +90,7 @@ let mpPeer=null,mpConn=null,mpRemote=null,mpRole='';
 let rocketCountdown=null,rocketTimer=null,rocketBlastOff=false;
 let boss=null,bossDefeats=+(localStorage.getItem('gng-boss-defeats')||0),runsCompleted=+(localStorage.getItem('gng-runs')||0),totalCoinsEarned=+(localStorage.getItem('gng-total-coins')||0);
 let jumpUpgrade=localStorage.getItem('gng-up-jump')==='true',magnetUpgrade=localStorage.getItem('gng-up-magnet')==='true',rapidUpgrade=localStorage.getItem('gng-up-rapid')==='true';
+let missionRewarded=localStorage.getItem('gng-mission-rewarded')==='true';
 function mpStatus(t){$('multiStatus').textContent=t}
 function mpDisconnect(){try{if(mpConn)mpConn.close();if(mpPeer)mpPeer.destroy()}catch(e){}mpConn=null;mpPeer=null;mpRemote=null;mpRole='';}
 function mpConnectReady(conn){mpConn=conn;conn.on('open',()=>{mpStatus('🟢 Connected! Start running and race your friend.');$('mission').textContent='Multiplayer connected! Race your friend and compare scores.'});conn.on('data',d=>{if(d&&d.kind==='runner')mpRemote=d});conn.on('close',()=>{mpRemote=null;mpConn=null;mpStatus('Friend disconnected. Create or join a room again.')});conn.on('error',()=>mpStatus('Connection hiccup. Try joining again.'))}
