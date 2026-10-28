@@ -220,13 +220,25 @@ function drawZoneScenery(){
   ctx.strokeStyle='#4d783b';ctx.lineWidth=5;for(let i=0;i<5;i++){let x=((i*220-drift*.7)%1100+1100)%1100-30;ctx.beginPath();ctx.moveTo(x,350);ctx.lineTo(x,322);ctx.lineTo(x-8,315);ctx.moveTo(x,335);ctx.lineTo(x+9,328);ctx.stroke()}
  }
 }
+function drawWeather(){
+ // Lightweight, district-specific atmosphere: snow, embers, dust, stars, and rain.
+ ctx.save();
+ if(zone===9){ctx.strokeStyle='#e9fbff';ctx.lineWidth=2;for(let i=0;i<42;i++){let x=(i*97+frame*(1+i%3)*.65)%920,y=(i*61+frame*(2+i%4))%350;ctx.globalAlpha=.45+(i%4)*.12;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x-5,y+10);ctx.stroke()}}
+ else if(zone===10){for(let i=0;i<28;i++){let x=(i*131+frame*(i%3+1)*.8)%900,y=350-((i*47+frame*(i%4+1)*1.7)%330);ctx.globalAlpha=.35+(i%4)*.12;ctx.fillStyle=i%3?'#ff653b':'#ffd15b';ctx.beginPath();ctx.arc(x,y,1.5+i%3,0,Math.PI*2);ctx.fill()}}
+ else if(zone===8||zone===12){ctx.fillStyle='#ffe0a0';for(let i=0;i<24;i++){let x=(i*113+frame*(i%3+1)*.45)%900,y=(i*67+frame*(i%2+1)*.22)%345;ctx.globalAlpha=.12+(i%4)*.04;ctx.fillRect(x,y,2+i%3,1+i%2)}}
+ else if(zone===11){ctx.fillStyle='#e6f2ff';for(let i=0;i<32;i++){let x=(i*83+17)%900,y=(i*47+23)%320;ctx.globalAlpha=.35+Math.abs(Math.sin(frame*.04+i))*.55;ctx.fillRect(x,y,1.5,1.5)}}
+ else if(zone===5||zone===2){ctx.strokeStyle=zone===5?'#9ceaff':'#a6c4ce';ctx.lineWidth=1;for(let i=0;i<24;i++){let x=(i*139+frame*(2+i%3))%920,y=(i*73+frame*(4+i%4))%340;ctx.globalAlpha=.15+(i%3)*.08;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x-4,y+12);ctx.stroke()}}
+ else if(zone===0||zone===6||zone===7){for(let i=0;i<18;i++){let x=(i*149+frame*(i%2?1.1:.55))%900,y=(i*59+Math.sin(frame*.03+i)*12+350)%340;ctx.globalAlpha=.3+(i%3)*.15;ctx.fillStyle=i%2?'#6af5ff':'#ff70df';ctx.fillRect(x,y,2,2)}}
+ ctx.restore();
+}
 function background(){
 let z=zones[zone],g=ctx.createLinearGradient(0,0,0,500);g.addColorStop(0,z.sky);g.addColorStop(.65,'#343653');g.addColorStop(1,'#17192c');ctx.fillStyle=g;ctx.fillRect(0,0,900,500);
 if(zone!==11){ctx.fillStyle=zone===9?'#f4fdff':zone===10?'#ff7446':(zone===8||zone===12)?'#fff0b0':'#ffcf83';ctx.beginPath();ctx.arc(735,85,34,0,Math.PI*2);ctx.fill();ctx.fillStyle=zone===10?'#ffbd55':'#ffe6a4';ctx.beginPath();ctx.arc(725,75,25,0,Math.PI*2);ctx.fill()}else{ctx.fillStyle='#f1f4ff';ctx.beginPath();ctx.arc(735,85,28,0,Math.PI*2);ctx.fill();ctx.fillStyle='#a9b4c8';ctx.beginPath();ctx.arc(726,77,5,0,Math.PI*2);ctx.arc(746,94,7,0,Math.PI*2);ctx.fill()}
 // Perspective city blocks with visible side faces and rooftops
 if(zone<8)for(let i=0;i<20;i++){let x=i*55-(dist*.28%55),h=80+(i*53%145),w=40+(i%3)*7,top=390-h;let col=i%2?'#1b2340':'#252943';ctx.fillStyle=col;ctx.fillRect(x,top,w,h);ctx.fillStyle='#080d20';ctx.beginPath();ctx.moveTo(x+w,top);ctx.lineTo(x+w+13,top-8);ctx.lineTo(x+w+13,390-h+8);ctx.lineTo(x+w,390-h+16);ctx.closePath();ctx.fill();ctx.fillStyle='#39415f';ctx.beginPath();ctx.moveTo(x,top);ctx.lineTo(x+12,top-9);ctx.lineTo(x+w+13,top-8);ctx.lineTo(x+w,top);ctx.closePath();ctx.fill();for(let yy=top+12;yy<380;yy+=18)for(let xx=x+7;xx<x+w-4;xx+=13){ctx.fillStyle=(Math.floor(xx+yy)%3===0)?'#ffcb71':'#596787';ctx.fillRect(xx,yy,5,7)}}
 drawZoneScenery();
-// Sidewalks and a road narrowing toward the horizon
+drawWeather();
+ // Sidewalks and a road narrowing toward the horizon
 ctx.fillStyle=z.ground;ctx.fillRect(0,350,900,150);ctx.fillStyle=zone===8?'#c79a58':zone===9?'#bfeaf7':zone===10?'#4c2026':zone===11?'#656d7e':'#64627b';ctx.beginPath();ctx.moveTo(0,350);ctx.lineTo(900,350);ctx.lineTo(900,500);ctx.lineTo(0,500);ctx.closePath();ctx.fill();
 const roadGrad=ctx.createLinearGradient(0,350,0,500);roadGrad.addColorStop(0,(zone===8||zone===12)?'#b9874f':zone===9?'#a8d4e2':zone===10?'#251a20':zone===11?'#747d8d':'#424958');roadGrad.addColorStop(1,(zone===8||zone===12)?'#80512e':zone===9?'#d7f5fa':zone===10?'#120f16':zone===11?'#aab3c1':'#171d29');ctx.fillStyle=roadGrad;ctx.beginPath();ctx.moveTo(325,350);ctx.lineTo(575,350);ctx.lineTo(850,500);ctx.lineTo(50,500);ctx.closePath();ctx.fill();
 // Fine asphalt/terrain grain gives the road a less flat, more tactile finish.
