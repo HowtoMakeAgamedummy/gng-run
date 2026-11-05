@@ -507,7 +507,16 @@ function clearThreeGroup(group){while(group.children.length){const o=group.child
 function makeThreeObstacle(o){const group=new THREE.Group();const color=o.type==='lava'?0xff4a22:o.type==='ice'?0x9defff:o.type==='mine'?0xa6baff:o.type==='anthill'?0xb98346:0xff4f76;const mat=new THREE.MeshStandardMaterial({color,roughness:.35,metalness:.3,emissive:color,emissiveIntensity:.24});const m=new THREE.Mesh(new THREE.BoxGeometry(Math.max(.65,(o.w||30)/32),Math.max(.55,(o.h||35)/28),.8),mat);m.position.y=.55;m.castShadow=true;m.receiveShadow=true;group.add(m);if(o.type==='mine'||o.type==='anthill'){const top=new THREE.Mesh(new THREE.ConeGeometry(.55,.6,7),mat);top.position.y=1.15;group.add(top)}threeScene.add(group);return group}
 function makeThreeEnemy(e){const g=new THREE.Group(),m=new THREE.Mesh(new THREE.IcosahedronGeometry(.62,1),new THREE.MeshStandardMaterial({color:0xff386f,roughness:.35,metalness:.25,emissive:0x7b0b36,emissiveIntensity:.8}));m.position.y=.95;m.castShadow=true;g.add(m);const eye=new THREE.Mesh(new THREE.SphereGeometry(.12,8,6),new THREE.MeshBasicMaterial({color:0xfff2bc}));eye.position.set(0,1.08,.52);g.add(eye);threeScene.add(g);return g}
 function makeThreeCoin(){const g=new THREE.Group(),m=new THREE.Mesh(new THREE.CylinderGeometry(.32,.32,.09,18),new THREE.MeshStandardMaterial({color:0xffd34f,metalness:.8,roughness:.22,emissive:0x8d5900,emissiveIntensity:.5}));m.rotation.x=Math.PI/2;g.add(m);threeScene.add(g);return g}
-function syncThreeItems(items,store,make){while(store.length<items.length)store.push({ref:null,mesh:make(items[store.length])});while(store.length>items.length){const it=store.pop();threeScene.remove(it.mesh);clearThreeGroup(it.mesh)}items.forEach((item,i)=>{const it=store[i];it.ref=item;const depth=Math.max(-1,Math.min(78,(940-(item.x||0))/12));const lateral=THREE.MathUtils.clamp(((item.x||0)-p.x)/115,-3.7,3.7);it.mesh.position.set(lateral,Math.max(.15,(390-(item.y||350))/85),-depth);it.mesh.rotation.y=threeClock*.7;it.mesh.visible=(item.x||0)>-80&&((item.x||0)<1050);if(item.type==='coin'||item.kind==='coin')it.mesh.position.y=1.05+Math.sin(threeClock*3+i)*.15})}
+function syncThreeItems(items,store,make){while(store.length<items.length)store.push({ref:null,mesh:make(items[store.length])});while(store.length>items.length){const it=store.pop();threeScene.remove(it.mesh);clearThreeGroup(it.mesh)}items.forEach((item,i)=>{const it=store[i];it.ref=item;
+ // In the 3D view, the runner is at z=0 and the road stretches forward along -Z.
+ // Spawned hazards start far ahead, then move toward the camera as their 2D x value falls.
+ const depth=THREE.MathUtils.clamp(((item.x||0)-p.x)/8,0,78);
+ const height=Math.max(.15,(390-(item.y||350))/85);
+ it.mesh.position.set(0,height,-depth);
+ it.mesh.rotation.y=threeClock*.7;
+ it.mesh.visible=(item.x||0)>p.x-45&&(item.x||0)<1050;
+ if(item.type==='coin'||item.kind==='coin')it.mesh.position.y=1.05+Math.sin(threeClock*3+i)*.15
+})}
 function renderThreeWorld(){
  if(!threeReady)return;threeClock+=.016;
  const s=skins[skin]||skins[0],u=threePlayer.userData;
