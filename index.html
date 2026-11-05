@@ -64,6 +64,19 @@ button.secondary,.choice-row button{background:linear-gradient(135deg,#252c4b,#3
 @media(max-width:600px){.camera-tag{font-size:8px;padding:5px 7px}}
 
 .road-move-controls{display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap;margin:8px 0}.road-move-controls button{min-width:64px;touch-action:manipulation}.road-move-note{font-size:11px;color:#b9c7e8;text-align:center;margin:4px 0 8px}
+
+/* CITY RUSH visual upgrade */
+:root{--gold:#ffe36e;--panel:#0b1024ee}
+body{background:radial-gradient(ellipse at 50% -12%,#344c78 0%,#171d39 38%,#060812 82%);background-attachment:fixed}
+h1{text-shadow:0 0 18px #64eaff55,0 3px 0 #0008}h1 span{color:#ffe36e;text-shadow:0 0 8px #ffc247,0 0 22px #ff9e36aa}
+.pill{background:linear-gradient(135deg,#ffffff18,#ffffff08);border-color:#7deaff55;box-shadow:inset 0 0 12px #79eaff0b,0 5px 18px #0005}
+.gamebox{position:relative;isolation:isolate;border-radius:19px;padding:3px;background:linear-gradient(120deg,#58eaff,#8c5cff,#ff4f9a,#ffe36e,#58eaff);background-size:300% 300%;animation:gngBorder 7s linear infinite;box-shadow:0 0 22px #56dfff44,0 0 55px #914dff22}
+.gamebox canvas#game,.gamebox canvas#threeGame{border-radius:16px;box-shadow:inset 0 0 45px #0008,0 12px 30px #0008}
+button{transition:transform .14s ease,filter .14s ease,box-shadow .14s ease;box-shadow:0 4px 0 #0005,0 0 14px #ffc24722}
+button:hover{transform:translateY(-2px);filter:brightness(1.13);box-shadow:0 6px 0 #0005,0 0 20px #ffc24766}button:active{transform:translateY(2px);box-shadow:0 1px 0 #0005}
+.panel,.progress-panel{background:linear-gradient(145deg,#121b38f2,#090e20f2);border-color:#6edfff3b;box-shadow:0 12px 30px #0005,inset 0 1px #ffffff12}
+@keyframes gngBorder{0%{background-position:0% 50%}100%{background-position:300% 50%}}
+@media(prefers-reduced-motion:reduce){.gamebox,button{animation:none;transition:none}}
 </style></head><body><main class="wrap">
 <div id="runtimeNotice" role="status" aria-live="polite" style="display:none;margin:10px 0;padding:12px;border:1px solid #ff6478;border-radius:12px;background:#35131dcc;color:#ffe5e8;font-weight:700"></div>
 <header><h1>GNG <span>RUN</span> : CITY RUSH <small style="font-size:11px;letter-spacing:2px;color:#b5b9d7;vertical-align:middle">OG EDITION</small></h1><div class="stats"><div class="pill">SCORE <span id="score">0</span></div><div class="pill">BEST <span id="best">0</span></div><div class="pill">🪙 <span id="coins">0</span></div><div class="pill">❤️ <span id="lives">3</span></div></div></header>
@@ -504,7 +517,7 @@ function initThreeWorld(){
 }
 function resizeThreeWorld(){if(!threeReady||!threeRenderer)return;const el=$('threeGame');const w=el.clientWidth||900,h=el.clientHeight||500;threeRenderer.setSize(w,h,false);threeCamera.aspect=w/h;threeCamera.updateProjectionMatrix()}
 function clearThreeGroup(group){while(group.children.length){const o=group.children[group.children.length-1];group.remove(o);if(o.geometry)o.geometry.dispose();if(o.material&&o.material.dispose)o.material.dispose()}}
-function makeThreeObstacle(o){const group=new THREE.Group();const color=o.type==='lava'?0xff4a22:o.type==='ice'?0x9defff:o.type==='mine'?0xa6baff:o.type==='anthill'?0xb98346:0xff4f76;const mat=new THREE.MeshStandardMaterial({color,roughness:.35,metalness:.3,emissive:color,emissiveIntensity:.24});const m=new THREE.Mesh(new THREE.BoxGeometry(Math.max(.65,(o.w||30)/32),Math.max(.55,(o.h||35)/28),.8),mat);m.position.y=.55;m.castShadow=true;m.receiveShadow=true;group.add(m);if(o.type==='mine'||o.type==='anthill'){const top=new THREE.Mesh(new THREE.ConeGeometry(.55,.6,7),mat);top.position.y=1.15;group.add(top)}threeScene.add(group);return group}
+function makeThreeObstacle(o){const group=new THREE.Group();const color=o.type==='lava'?0xff4a22:o.type==='ice'?0x9defff:o.type==='mine'?0xa6baff:o.type==='anthill'?0xb98346:0xff4f76;const mat=new THREE.MeshStandardMaterial({color,roughness:.3,metalness:.48,emissive:color,emissiveIntensity:.42});const w=Math.max(.75,(o.w||30)/32),h=Math.max(.65,(o.h||35)/28);const core=new THREE.Mesh(new THREE.BoxGeometry(w,h,.9),mat);core.position.y=h/2;core.castShadow=true;core.receiveShadow=true;group.add(core);const trim=new THREE.Mesh(new THREE.BoxGeometry(w+.12,.09,1),new THREE.MeshBasicMaterial({color:0xffffff}));trim.position.y=h+.045;group.add(trim);const spikeMat=new THREE.MeshStandardMaterial({color:0xffe36e,emissive:0xff8a24,emissiveIntensity:.65,metalness:.35});for(let i=0;i<3;i++){const spike=new THREE.Mesh(new THREE.ConeGeometry(.22,.55,6),spikeMat);spike.position.set((i-1)*Math.min(.48,w*.28),h+.32,0);spike.rotation.z=(i-1)*-.18;spike.castShadow=true;group.add(spike)}const halo=new THREE.Mesh(new THREE.TorusGeometry(Math.max(.55,w*.58),.045,6,24),new THREE.MeshBasicMaterial({color}));halo.rotation.x=Math.PI/2;halo.position.y=.08;group.add(halo);group.userData.spin=halo;threeScene.add(group);return group}
 function makeThreeEnemy(e){const g=new THREE.Group(),m=new THREE.Mesh(new THREE.IcosahedronGeometry(.62,1),new THREE.MeshStandardMaterial({color:0xff386f,roughness:.35,metalness:.25,emissive:0x7b0b36,emissiveIntensity:.8}));m.position.y=.95;m.castShadow=true;g.add(m);const eye=new THREE.Mesh(new THREE.SphereGeometry(.12,8,6),new THREE.MeshBasicMaterial({color:0xfff2bc}));eye.position.set(0,1.08,.52);g.add(eye);threeScene.add(g);return g}
 function makeThreeCoin(){const g=new THREE.Group(),m=new THREE.Mesh(new THREE.CylinderGeometry(.32,.32,.09,18),new THREE.MeshStandardMaterial({color:0xffd34f,metalness:.8,roughness:.22,emissive:0x8d5900,emissiveIntensity:.5}));m.rotation.x=Math.PI/2;g.add(m);threeScene.add(g);return g}
 function syncThreeItems(items,store,make){while(store.length<items.length)store.push({ref:null,mesh:make(items[store.length])});while(store.length>items.length){const it=store.pop();threeScene.remove(it.mesh);clearThreeGroup(it.mesh)}items.forEach((item,i)=>{const it=store[i];it.ref=item;
@@ -513,7 +526,7 @@ function syncThreeItems(items,store,make){while(store.length<items.length)store.
  const depth=THREE.MathUtils.clamp(((item.x||0)-p.x)/8,0,78);
  const height=Math.max(.15,(390-(item.y||350))/85);
  it.mesh.position.set(0,height,-depth);
- it.mesh.rotation.y=threeClock*.7;
+ it.mesh.rotation.y=threeClock*.7;if(it.mesh.userData.spin)it.mesh.userData.spin.rotation.z=threeClock*1.8;
  it.mesh.visible=(item.x||0)>p.x-45&&(item.x||0)<1050;
  if(item.type==='coin'||item.kind==='coin')it.mesh.position.y=1.05+Math.sin(threeClock*3+i)*.15
 })}
