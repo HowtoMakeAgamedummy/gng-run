@@ -77,6 +77,38 @@ button:hover{transform:translateY(-2px);filter:brightness(1.13);box-shadow:0 6px
 .panel,.progress-panel{background:linear-gradient(145deg,#121b38f2,#090e20f2);border-color:#6edfff3b;box-shadow:0 12px 30px #0005,inset 0 1px #ffffff12}
 @keyframes gngBorder{0%{background-position:0% 50%}100%{background-position:300% 50%}}
 @media(prefers-reduced-motion:reduce){.gamebox,button{animation:none;transition:none}}
+
+/* GNG RUN: LEGENDARY ARCADE EDITION */
+@keyframes gngAurora{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes gngFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes gngScan{0%{transform:translateX(-120%)}100%{transform:translateX(240%)}}
+header{position:relative;isolation:isolate;padding:16px 18px 18px;margin:0 0 14px;border:1px solid #7cefff35;border-radius:18px;background:linear-gradient(110deg,#101a35ee,#17102bee,#10283aee);background-size:200% 200%;animation:gngAurora 14s ease infinite;box-shadow:0 14px 38px #0006,inset 0 1px #ffffff16}
+header:after{content:"CITY RUSH  //  LEGENDARY EDITION";position:absolute;right:18px;bottom:-8px;padding:3px 9px;border-radius:6px;background:#0a1022;border:1px solid #7cefff66;color:#7cefff;font-size:9px;font-weight:1000;letter-spacing:2px}
+header h1{font-size:clamp(25px,4vw,46px);line-height:1.05}
+header h1 small{display:inline-block;padding:5px 8px;border:1px solid #7cefff55;border-radius:7px;background:#7cefff12}
+.stats .pill{min-width:76px;text-align:center;border-radius:12px;padding:10px 13px;font-size:11px;letter-spacing:1px}
+.stats .pill span{display:block;margin-top:3px;font-size:20px;letter-spacing:0;color:#fff;text-shadow:0 0 12px #7cefff88}
+.join-panel{border-color:#7cefff55;background:linear-gradient(110deg,#101a35,#21183e 60%,#102c3d);box-shadow:0 12px 28px #0005,inset 0 1px #ffffff16}
+.gamebox{padding:4px;border-radius:20px;box-shadow:0 0 24px #4deaff44,0 0 65px #a855f722,0 22px 48px #0009}
+.gamebox canvas#game,.gamebox canvas#threeGame{border-radius:16px}
+.camera-tag{top:15px;left:15px;padding:8px 11px;border-color:#7cefff88;background:#06101de8;color:#b9f7ff;letter-spacing:2px;box-shadow:0 0 22px #21d8ff55}
+.btnrow{padding:10px;margin-top:10px;border:1px solid #ffffff18;border-radius:14px;background:linear-gradient(100deg,#111a31cc,#201535cc);box-shadow:inset 0 1px #ffffff0c}
+.btnrow button{min-height:44px}
+.btnrow #start{background:linear-gradient(110deg,#79f7d4,#55d9ff,#a78bfa);color:#071426;box-shadow:0 0 22px #5de8ff55}
+.panel{border-radius:18px}
+.panel h2,.progress-panel h2,.codebox h2,.customizer h2{font-size:15px;letter-spacing:1.6px}
+.progress-panel{border:1px solid #7cefff35;border-radius:18px;background:linear-gradient(135deg,#111a32f5,#17112bf5);box-shadow:0 14px 34px #0005,inset 0 1px #ffffff12}
+.progress-panel>div{padding:12px;border:1px solid #ffffff14;border-radius:13px;background:#ffffff05}
+.progress-panel h2{color:#7cefff}
+.codebox,.customizer{border-radius:18px;border-color:#8b78ff55}
+#status{padding:9px 10px;border-radius:10px;background:#7cefff0d;border:1px solid #7cefff22}
+.meter{height:11px;border:1px solid #ffffff20;background:#050914}
+.meter div{background:linear-gradient(90deg,#ff4d75,#ffb84d,#72f5bd);box-shadow:0 0 12px #ff648b88}
+.skin,.zone{border-radius:11px}
+.road-move-controls button{min-width:110px;min-height:45px}
+.hint{font-size:12px;color:#d8e7ff}
+@media(max-width:760px){header{padding:13px 12px}header:after{font-size:8px;right:10px}.stats .pill{min-width:0}.stats .pill span{font-size:17px}.progress-panel>div{padding:10px}}
+@media(prefers-reduced-motion:reduce){header{animation:none}}
 </style></head><body><main class="wrap">
 <div id="runtimeNotice" role="status" aria-live="polite" style="display:none;margin:10px 0;padding:12px;border:1px solid #ff6478;border-radius:12px;background:#35131dcc;color:#ffe5e8;font-weight:700"></div>
 <header><h1>GNG <span>RUN</span> : CITY RUSH <small style="font-size:11px;letter-spacing:2px;color:#b5b9d7;vertical-align:middle">OG EDITION</small></h1><div class="stats"><div class="pill">SCORE <span id="score">0</span></div><div class="pill">BEST <span id="best">0</span></div><div class="pill">🪙 <span id="coins">0</span></div><div class="pill">❤️ <span id="lives">3</span></div></div></header>
